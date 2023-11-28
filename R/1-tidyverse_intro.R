@@ -59,6 +59,9 @@ library(magrittr) # pipe from magrittr package: %>%
 
 # base R
 24 |> sum(9)
+"one" |> paste("two")
+"one" |> paste("two", _) #Error: pipe placeholder can only be used as a named argument
+# |> = 'syntactic sugar', while %>% is a function
 
 # show data
 dplyr::glimpse(mtcars)
@@ -109,6 +112,10 @@ as_tibble(mtcars)
 
 # EXERCISE 2: The following block of code is difficult to read because of multiple
 #             layers of nesting. Improve the readability of the code using %>%.
+# HINT: In case of nesting, R will start at the 'center' to evaluate functions, and
+#       sequentially work its way 'outward'. For example, in case of 3 nested functions 
+#       named f_A(), f_B() and f_C() such as f_C(f_B(f_A(data))), the order of 
+#       perations will be A -> B -> C.
 storms_clean <- summarize(
   group_by(
     filter(storms, name == "Sandy"), day),

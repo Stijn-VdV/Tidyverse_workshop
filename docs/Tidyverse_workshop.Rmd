@@ -1,7 +1,7 @@
 ---
 title: "Tidyverse: Data Wrangling 101"
 author: "Stijn Van de Vondel"
-date: "07-11-2022"
+date: "28-11-2023"
 output: 
   rmdformats::robobook:
     toc_depth: 3
@@ -29,7 +29,7 @@ opts_knit$set(width = 150)
   # colour text
 colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
-    sprintf("\\textcolor{%s}{%s}", color, x)
+    sprintf("textcolor{%s}{%s}", color, x)
   } else if (knitr::is_html_output()) {
     sprintf("<span style='color: %s;'>%s</span>", color,
       x)
@@ -41,36 +41,44 @@ colorize <- function(x, color) {
 
 ### 0.1 Target audience
 
-This course is targeted at Master's and Ph.D. students with a basic understanding of the R programming language, but want to manipulate (large) datasets with more ease than using spreadsheet software. In other words, being comfortable with basic R operations is required.
+This course is targeted at Master's and Ph.D. students with a basic understanding of the R programming language, but want to manipulate (large) datasets in R instead of using spreadsheet software. Being comfortable with basic R jargon (e.g., vectors, functions, objects, ...) and operations is strongly recommended.
 
-### 0.2 Preparations
+### 0.2 Recommended preparations
 
-**Please go through all of the steps below before attending the workshop!!**
+**Following the steps described below is highly recommended before attending the workshop.**
 
 Make sure to have at least `R version 4.1.0` installed on your computer. Additionally, I strongly recommend installing RStudio, as I will be using this as my Integrated Development Environment (IDE) throughout this course.
 
 -   Installing R: <https://www.r-project.org/>
 -   Installing RStudio: <https://www.rstudio.com/products/rstudio/download/#download>
 
-Finally, install tidyverse using `install.packages("tidyverse")`.
+Finally, install packages included in the tidyverse using `install.packages("tidyverse")`. Packages can also be installed and loaded separately.
 
 ### **0.3 Prerequisites**
 
-A basic understanding of R is assumed. As we have a lot of ground to cover, it would be unwise to jump in unprepared! If you are not yet comfortable with R basics (loading a package, importing data, creating vectos and dataframes), I strongly recommend the \`swirl\` package, which interactively introduces you to R (see [swirl's website](%5Bhttps://swirlstats.com/students.html)](<https://swirlstats.com/students.html>)) for more information). To get started with \`swirl\` right away, install the package using \`install.packages("swirl")\`, load it into your session with \`library(swirl)\` and jump-start your journey with \`swirl()\`. Going through the first chapter (\`1: Basic Building Blocks\`) should suffice, but don't let that stop you from learning moRe!
+A basic understanding of R is assumed. As we have a lot of ground to cover, it would be unwise to jump in unprepared! If you are not yet comfortable with R basics (loading a package, importing data, creating vectos and dataframes), I strongly recommend the `swirl` package, which interactively introduces you to R (see [swirl's website](%5Bhttps://swirlstats.com/students.html)](<https://swirlstats.com/students.html>)) for more information). To get started with `swirl` right away, install the package using `install.packages("swirl")`, load it into your session with `library(swirl)` and jump-start your journey with `swirl()`. Going through the first chapter (`1: Basic Building Blocks`) should suffice, but don't let that stop you from learning moRe!
 
 ### 0.4 Overview {data-link="0.2 Preparations"}
 
 For an overview of all sections covered within this material, please refer to the sidebar of this document or use the hyperlinks shown below. Sections 1 to 4 are not required for working with `tidyverse`, but are recommended to expand your understanding of how these packages work the way they do. Additionally, you'll learn how to deal with importing data, including a section on larger datasets. Starting from section 5, we will get our hands dirty with actual `tidyverse` data manipulation.
 
-[1. Introduction]\
-[2. The whole game]\
-[3. Tibbles and pipes]\
-[4. Importing data]\
-[5. Data manipulation with `dplyr`]\
-[6. Tidy data with `tidyr`]\
-[7. DataViz: `ggplot2`]\
-[8. Life cycle]\
-[9. Cheat sheets]
+-   [1. Introduction]
+
+-   [2. The whole game]
+
+-   [3. Tibbles and pipes]
+
+-   [4. Importing data]
+
+-   [5. Data manipulation with `dplyr`]
+
+-   [6. Tidy data with `tidyr`]
+
+-   [7. DataViz: `ggplot2`]
+
+-   [8. Life cycle]
+
+-   [9. Cheat sheets]
 
 ## 1. Introduction
 
@@ -78,9 +86,9 @@ For an overview of all sections covered within this material, please refer to th
 
 As a biology student, I was introduced to R in the very first year of the programme. With R being my first scripting language, it was as much an uphill struggle as any other new language. In the second year, R was thrown on the table again in the context of statistics, with another round of RStats in the Master's programme, 2 years later. In this time, I used R only as a means to perform statistical tests. As real, raw data was rarely in the format that was presented during any of the statistical courses, I cleaned, filtered, pivoted, ... all of it using MS Excel. If you haven't already, this can be a very time- and energy-consuming endeavour! Indeed, we never really learned how to clean and wrangle our datasets, leading to a lot of trouble and frustration toward data analysis.
 
-During my thesis, however, I found out about 'Tidyverse', but never *truly* submerged myself. At the start of my Ph.D. in October 2020, I seized the moment to learn the ropes of this set of packages, and I haven't looked back since (and learned more about R along the way, as well). To potentially save you a lot of time and trouble - whether you are a Master's or Ph.D. student, or even something beyond that -, I want to share with you some of the things I have learned along the way. For the record, I'm far from an expert on the matter, and there is still a lot left to explore!
+During my thesis, however, I found out about 'Tidyverse', but never *truly* submerged myself. At the start of my Ph.D. in October 2020, I seized the moment to learn the ropes of this set of packages, and learned more about R along the way. To potentially save you a lot of time and trouble - whether you are a Master's or Ph.D. student, or even something beyond that -, I want to share with you some of the things I have learned along the way. For the record, I'm far from an expert on the matter, and there is still a lot left to explore!
 
-This origin story aside, hopefully this material will prove to be helpful somewhere along your data journey. There are many ways to deal with data tidying and wrangling, and the `tidyverse` just happens to be the one I prefer at the moment. Feel free to send me any and all feedback you may have to [Stijn.VandeVondel\@uantwerpen.be](mailto:Stijn.VandeVondel@uantwerpen.be){.email}.
+This origin story aside, hopefully this material will prove to be helpful somewhere along your data journey. There are many ways to deal with data tidying and wrangling, and the `tidyverse` just happens to be one of them. Feel free to send any and all feedback you may have to [Stijn.VandeVondel\@uantwerpen.be](mailto:Stijn.VandeVondel@uantwerpen.be){.email}.
 
 ### 1.2 Tidyverse
 
@@ -129,9 +137,9 @@ As shown in [1.2 Tidyverse], `library(tidyverse)` attaches multiple packages to 
 tidyverse_conflicts()
 ```
 
-In English, `filter()` and `lag()` from the `dplyr` package share their names with `filter()` and `lag()` from the `stats` package (included with any R installation). In other words, once `dplyr` has been attached to your R session, `filter()` and `lag()` from the `stats` package will no longer be accessible (unless called *explicitly* using e.g. `stats::filter()` ). The `::` in `dplyr::filter()` indicates that `filter()` originates from the **namespace** of `dplyr` ("the space in which all names, belonging to a package, reside"). More specifically, `::` allows accessing a specific package's functions *without* loading the entire package into R (see `?'::'` for more details).
+In English, the functions `filter()` and `lag()` from the `dplyr` package share their names with `filter()` and `lag()` from the `stats` package (included with any R installation). In other words, once `dplyr` has been attached to your R session, `filter()` and `lag()` from the `stats` package will no longer be accessible (unless called *explicitly* using e.g. `stats::filter()` ). The `::` in `dplyr::filter()` indicates that `filter()` originates from the **namespace** of `dplyr` ("the space in which all names, belonging to a package, reside"). More specifically, `::` allows accessing a specific package's functions *without* loading the entire package into R (see `?'::'` for more details).
 
-If you end up working with many different packages, you will need to take such conflicts into account. One error I have come across very often, is whenever using `dplyr` and `raster` (in case I load `raster` *after* `tidyverse`, thereby masking `dplyr::select` with `raster::select)`.
+If you end up working with many different packages, you will need to take such conflicts into account. One error I have come across very often, is whenever using `dplyr` and `raster` (in case I load `raster` *after* a `tidyverse` library, thereby masking `dplyr::select` with `raster::select)`.
 
 ```{r conflicts2, eval = FALSE}
   # load packages
@@ -158,7 +166,7 @@ Error in (function (classes, fdef, mtable)  :
   unable to find an inherited method for function ‘select’ for signature ‘"spec_tbl_df"’
 ```
 
-Even though we were already warned that `dplyr::select` was masked by `raster::select`, we still tried using the `select()` function as if it was called from the `dplyr` package. Instead, `select()` was called from the `raster` package (which is aimed at geometrically subsetting raster or spatial objects), triggering the error.
+Even though we were already warned that `dplyr::select` was masked by `raster::select`, we still tried using the `select()` function as if it was called from the `dplyr` package. Instead, `select()` was called from the `raster` package (which is aimed at geometrically subsetting raster or spatial objects), triggering the error (as `select` from the `raster` package cannot deal with the provided data object).
 
 Another way to find out which namespace a function is called from, is by entering a function's name (*without* brackets `()`) in your R console. In case of the code above, the following message would be printed for `select`:
 
@@ -185,7 +193,7 @@ Use  showMethods(select)  for currently available ones.
 knitr::include_graphics("images/datacleaning_meme.jpg")
 ```
 
-To deal with such datasets, rigorous cleaning and wrangling is required before even thinking about modelling or visualizing the story residing within your data. The schematic below (as shown in [R for Data Science](https://r4ds.had.co.nz/); great reference material!) encompasses the entire process of data science with `tidyverse`; this course is (mostly) limited to the parts **`r colorize("highlighted in blue", "#169EFC")`**. Most importantly, **data tidying** and **transformation** will be taking center stage, with some notes on **importing data** and dipping our toes in **visualization**.
+To deal with such datasets, rigorous cleaning and wrangling is required before even thinking about modelling or visualizing the story residing within your data. The schematic below (as shown in [R for Data Science](https://r4ds.had.co.nz/); great reference material!) encompasses the entire process of data science with `tidyverse`; this course is (mostly) limited to the parts **`r colorize("highlighted in blue", "#169EFC")`**. Most importantly, **data tidying** and **transformation** will be taking center stage, with some notes on **importing data**, and dipping our toes in **visualization** at the end.
 
 ```{r, echo=FALSE, out.width="70%", fig.cap = "Data wrangling. Source: [R for Data Science](https://r4ds.had.co.nz/wrangle-intro.html)", fig.align="center"}
 knitr::include_graphics("images/data-science-wrangle.png")
@@ -193,7 +201,7 @@ knitr::include_graphics("images/data-science-wrangle.png")
 
 ### 2.2 Data cleaning vs data wrangling
 
-The above schematic in words: Raw data first needs to be **imported** by loading it into the R environment (which *usually* means effectively loading data into memory (RAM)). Once loaded, data often requires **tidying** (or *data cleaning*) and **transformation** (or *data wrangling*) prior to any analyses down the line. In more exact terms, **data cleaning** is the **process through which errors are fixed and data quality is ensured**, while **data wrangling** would be defined as the **process through which raw data is manipulated and transformed**. As tools for both processes can often be used interchangeably, I will not distinguish between these definitions. For the sake of everyone's convenience, I will simply talk about **data wrangling** as a whole.
+The above schematic in words: Raw data first needs to be **imported** by loading it into the R environment (which *usually* means effectively loading data into memory (RAM)). Once loaded, data often requires **tidying** (or *data cleaning*) and **transformation** (or *data wrangling*) prior to any analyses down the line. In more exact terms, **data cleaning** is the **process through which errors are fixed and data quality is ensured**, while **data wrangling** would be defined as the **process through which raw data is manipulated and transformed**. This is only a matter of semantics, and will not impact the flow of this workshop.
 
 ## 3. Tibbles and pipes
 
@@ -224,11 +232,11 @@ One hint toward the answer can be obtained by running both objects (simply `a_da
 knitr::include_graphics("images/dataframe_vs_tibble.png")
 ```
 
-As shown in the figure above, a couple of features are shown in a tibble that are non-existent for 'regular' dataframes. In a way, a tibble is nothing more than a data frame with some extra 'quality of life' features. However, there are other important differences going on under the hood, encapsulating best practices for data frames. Read more on tibbles [here](https://tibble.tidyverse.org/reference/tbl_df-class.html).
+As shown in the figure above, a couple of features are shown in a tibble that are non-existent for 'regular' dataframes. In a way, a tibble is nothing more than a data frame with some extra 'quality of life' features. However, there are other important differences going on under the hood, encapsulating best practices for data frames. In most cases, tibbles and dataframes can be used interchangeably, though some packages/functions will return an error as they do not recognize tibbles as dataframes with a cherry on top. Read more on tibbles [here](https://tibble.tidyverse.org/reference/tbl_df-class.html).
 
 ### 3.2a Pipes: short version
 
-Pipes are a special operator aimed at making code more intuitive to read and write (though opinions may differ). The `tidyverse` pipe is written as `%>%` (`CTRL+SHIFT+M` in RStudio) and originates from the `magrittr` package ([to be pronounced with a sophisticated french accent](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)). They are automatically loaded in with `library(tidyverse)` or `library(dplyr)`, but can also be loaded separately using `library(magrittr)` or `library(magrittr, include.only = "%>%")`.
+A pipe is a special operator aimed at making code more intuitive to read and write (though opinions may differ), and is not exclusive to R. The `tidyverse` pipe is written as `%>%` (`CTRL+SHIFT+M` in RStudio) and originates from the `magrittr` package ([to be pronounced with a sophisticated french accent](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html)). They are automatically loaded in with `library(tidyverse)` or `library(dplyr)`, but can also be loaded separately using `library(magrittr)` or `library(magrittr, include.only = "%>%")`.
 
 In brief, the `magrittr` pipe passes the output of what comes *before* the pipe (left-hand side) as input to the function *after* the pipe (right-hand side). The pseudo-code below shows what this looks like in the context of baking cookies in a factory, going through the functions and pipes as if it were a conveyer belt or *pipeline*.
 
@@ -247,6 +255,8 @@ choc_chip_cookies <- raw_ingredients %>%
 ```
 
 In case you don't completely understand the `%>%` yet, I've written a more lengthy section below ([3.2b Pipes: long version]). It will help you to better grasp the benefits of the operator, but is not required to get you going with `tidyverse`. **The bottom line remains:** `%>%` **passes what comes *before* to what comes *after* the pipe**, effectively creating a virtual pipeline of consecutive operations.
+
+NOTE: As of `R version 4.1.0`, R also sports a native pipe operator `|>`. Its behaviour is highly similar to `%>%`, but is now part of the R language *itself*, while `%>%` needs to be imported from a package. For further reading, head on over to following [comparison](https://michaelbarrowman.co.uk/post/the-new-base-pipe/). By default, RStudio may resort to the `%>%` pipe (as RStudio and `tidyverse` are developed by the same team). This behaviour can be changed in the settings of RStudio via Tools \> Global options \> Code \> Editing. The `|>` operator will not be covered in this course, though I have grown to like it slightly more than `%>%` (mostly aesthetically :-)).
 
 ### 3.2b Pipes: long version
 
@@ -335,7 +345,7 @@ choc_chip_cookies <- raw_ingredients %>%
 
 For now, this is all you need to know about pipes (and far more than I knew when I started out). In brief, the magrittr pipe passes the output of what comes *before* the pipe (left-hand side) as input to the function *after* the pipe (right-hand side). For more technical information, see [here](https://magrittr.tidyverse.org/reference/pipe.html).
 
-NOTE: Ever since `R version 4.1.0`, R also sports a native pipe operator `|>`. Its behaviour is highly similar to `%>%`, but is now part of the R language *itself*, while `%>%` needs to be imported from a package. For further reading, head on over to following [comparison](https://michaelbarrowman.co.uk/post/the-new-base-pipe/). The `|>` operator will not be covered in this course.
+NOTE: As of `R version 4.1.0`, R also sports a native pipe operator `|>`. Its behaviour is highly similar to `%>%`, but is now part of the R language *itself*, while `%>%` needs to be imported from a package. For further reading, head on over to following [comparison](https://michaelbarrowman.co.uk/post/the-new-base-pipe/). By default, RStudio may resort to the `%>%` pipe (as RStudio and `tidyverse` are developed by the same team). This behaviour can be changed in the settings of RStudio via Tools \> Global options \> Code \> Editing. The `|>` operator will not be covered in this course, though I have grown to like it slightly more than `%>%` (mostly aesthetically :-)).
 
 ```{r, echo = FALSE, out.width="50%", fig.cap = "*'Ceci n'est pas une pipe'*, by Belgian artist René Magritte, which served to be the etymological inspiration for the [*magrittr*](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html) package.", fig.align="center"}
 knitr::include_graphics("images/MagrittePipe.jpg")
@@ -376,7 +386,7 @@ In case your workflow is suffering from large data files, fear not - there are m
 
 That said, `data.table` still ought to be faster in case of numeric data than `vroom`. On top of that, `data.table` provides tools and syntax to wrangle data much more efficiently than e.g. `tidyverse` functions. In addition, `data.table` is also faster and more memory-efficient in doing so, but its syntax is more difficult to read and write. As a compromise, `dtplyr` has been called into existence within the `tidyverse`, which uses the same 'tidy verbs' you'll become familiar with, but translates this into `data.table` syntax to benefit of its sheer speed (with some minor loss of speed due to [overhead](https://stackoverflow.com/questions/2860234/what-is-overhead/2860263), and loss of memory-efficiency). One additional thing I want to mention about `data.table` is its very convenient *and* fast way of reading (`fread`) and writing (`fwrite`) data with. It is highly similar to base R's `read.table()`, but automatically detects column separators, data types, and has many arguments to customize the function call.
 
-Nevertheless, as of [`readr 2.0.0`](https://www.tidyverse.org/blog/2021/07/readr-2-0-0/), the package uses `vroom` as a backend, granting an impressive speed boost. Below, I provide a benchmark comparing base R's `read.csv()`, the previous (\**.old*) and current version of `read_csv()` (\**.new*), as well as `data.table::fread()` to import a `.csv` file containing 16 columns of \> 34 million rows, mostly numerical data (total size: 3.56 GB, uncompressed).
+Nevertheless, as of [`readr 2.0.0`](https://www.tidyverse.org/blog/2021/07/readr-2-0-0/), the package uses `vroom` as a backend, granting an impressive speed boost. Below, I provide a benchmark comparing base R's `read.csv()`, the previous (\*\*.old\*) and current version of `read_csv()` (\*\*.new\*), as well as `data.table::fread()` to import a `.csv` file containing 16 columns of \> 34 million rows, mostly numerical data (total size: 3.56 GB, uncompressed).
 
 ```{r comparison code, eval = FALSE, echo = FALSE}
   # define file path
@@ -671,7 +681,7 @@ To remove grouping, either use `summarize()` in case you want to create a summar
 
 My personal take on grouping and ungrouping is that I will *always* (try to) add `ungroup()` following the use of `group_by()`, *even*, if I have already used `summarize()`. Even though `summarize()` removes a layer of grouping, the additional use of `ungroup()` makes the operation explicit, clearly conveying that your functions operate on grouped or non-grouped data. The examples provided earlier do not conform with this notion for the sake of brevity.
 
-[**Bonus:**]{.ul} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
+[**Bonus:**]{.underline} `count()` provides a 'quick and dirty" convenience function so you can easily count e.g. the number of individuals that share the same `species` name, rather than going through a separate `group_by()` and `summarize()` call.
 
 ```{r count, eval = FALSE}
 starwars %>% 

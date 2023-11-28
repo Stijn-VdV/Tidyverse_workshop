@@ -43,7 +43,7 @@ starwars %>%
 # use select() to prepare data for next steps
 starwars <- select(starwars, -c(films, vehicles, starships))
 
-# - filter() to filter rows using TRUE/FALSE statements ----
+# - filter() to filter rows using TRUE/FALSE (boolean) statements ----
 # characters with a gold skin colour
 1 == 1
 1 == 2
