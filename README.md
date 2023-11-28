@@ -1,4 +1,4 @@
-# Tidyverse workshop 2022
+# 3DLab Tidyverse workshop
 
 ## Target audience
 This course is targeted at Master’s and Ph.D. students with a basic understanding of the R programming language, but want to manipulate (large) datasets with more ease than using spreadsheet software. In other words, being comfortable with basic R operations is required.
