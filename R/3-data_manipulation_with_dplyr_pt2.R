@@ -62,7 +62,7 @@ movies %>% left_join(publishers)
 # left_join(movies, publishers)
 
 # right_join: add information to all rows of publishers
-# publishers %>% left_join(movies)
+publishers %>% left_join(movies)
 movies %>% right_join(publishers)
 
 # full_join: combine all information of both datasets

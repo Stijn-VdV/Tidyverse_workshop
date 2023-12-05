@@ -5,13 +5,14 @@
 
 # - 1 - Introduction to tidyverse ----
 # EXERCISE 1: Rewrite the following lines of code using %>%
-round(pi, 2)
+round(pi, digits = 2)
 sum(1, 5, 20)
 as_tibble(mtcars)
 
 
-pi %>% round(2)
-2 %>% round(pi, .)
+pi %>% round(digits = 2)
+2 %>% round(pi, digits = .)
+2 %>% round(., x = pi)
 
 1 %>% sum(5) %>% sum(20)
 1 %>% sum(5, 20)

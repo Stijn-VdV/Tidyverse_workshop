@@ -51,15 +51,16 @@ sum(24, 9)
 # library(tidyverse)
 # library(dplyr)
 library(magrittr) # pipe from magrittr package: %>%
+# library(dplyr)
 24 %>% sum(9)
 24 %>% sum(9, .) # . as placeholder
 
-"one" %>% paste("two")
-"one" %>% paste("two", .)
+"one" %>% paste("two") # paste("one", "two")
+"one" %>% paste("two", .) # paste("two", "one")
 
 # base R
 24 |> sum(9)
-"one" |> paste("two")
+"one" |> paste("two") 
 "one" |> paste("two", _) #Error: pipe placeholder can only be used as a named argument
 # |> = 'syntactic sugar', while %>% is a function
 

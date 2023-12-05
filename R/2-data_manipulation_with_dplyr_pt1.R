@@ -11,6 +11,7 @@ library(dplyr)
 ?starwars
 glimpse(starwars)
 head(starwars)
+str(starwars)
 
 # - select() to select columns ----
 # select columns by name #1
@@ -48,6 +49,7 @@ starwars <- select(starwars, -c(films, vehicles, starships))
 1 == 1
 1 == 2
 c(1, 3, 5) == c(1, 3, 5) # boolean operations on vectors
+c(1, 3, 5, 8) == c(1, 3, 5) # boolean operations on vectors
 
 starwars %>%
   filter(skin_color == "gold")
@@ -57,16 +59,16 @@ starwars %>%
   # not with a golden skin colour,
   # and at least 176.5 cm tall
 starwars %>%
-  filter(gender == "masculine",
-         skin_color != "gold",
+  filter(gender == "masculine", #AND
+         skin_color != "gold", #AND
          height >= 176.5) %>% View()
 
 # characters with eye_color == "blue" OR eye_color == "red"
-# starwars %>%
-#   filter(eye_color == "blue" | eye_color == "red")
+starwars %>%
+  filter(eye_color == "blue" | eye_color == "red" | eye_color == "brown")
 
 starwars %>%
-  filter(eye_color %in% c("blue", "red"))
+  filter(eye_color %in% c("blue", "red", "brown"))
 
 
 # characters NOT with eye_color == "blue" OR eye_color == "red
@@ -94,11 +96,15 @@ starwars %>%
 starwars %>%
   arrange(desc(height))
 
+starwars %>% 
+  arrange(-height)
+
 # arranging using multiple columns
 starwars %>%
   arrange(skin_color, species)
 
 # - mutate() to create/modify columns ----
+# very similar to transform()
 starwars_test <- starwars
 
 starwars_test$new_column <- "star wars"
@@ -106,7 +112,7 @@ starwars_test$new_column <- "star wars"
 # calculate BMI and arrange from highest to lowest
 sw_bmi <- starwars %>%
   mutate(bmi = mass/(height/100)^2) %>%
-  select(name:mass, bmi)
+  select(name:mass, bmi) 
 
 sw_bmi %>%
   arrange(desc(bmi))
@@ -142,6 +148,8 @@ starwars %>%
   mutate(across(where(is.numeric), \(x) {x*10}))
 
   # tidy code, less verbose
+# . placeholder = dataframe
+# .x placeholder = variable
 starwars %>%
   mutate(across(where(is.numeric), ~.x*10))
 
@@ -168,6 +176,7 @@ glimpse(sw_subset, width = 75)
 glimpse(sw_subset_gr, width = 75)
 
 # summarize() collapses your data to 1 row per group
+# summarise()
 
 # average height and weight
 starwars %>%
@@ -182,20 +191,21 @@ starwars %>%
   summarize(average_height = mean(height, na.rm = TRUE),
             stdev_height = sd(height, na.rm = TRUE),
             average_weight = mean(mass, na.rm = TRUE),
-            stdev_weight = sd(mass, na.rm = TRUE)) %>%
+            stdev_weight = sd(mass, na.rm = TRUE),  
+            group_size = n()) %>%
   glimpse()
 
 # group_by can also be used with mutate, filter, ...
 starwars %>%
   group_by(species) %>%
   mutate(average_height = mean(height, na.rm = TRUE))  %>%
-  ungroup() # remove grouping
+  ungroup() %>% View() # remove grouping
 
 # average height and weight PER SPECIES #2
 starwars %>%
   tidyr::drop_na(species) %>%
   group_by(species) %>%
-  filter(n() >= 3) %>%
+  filter(n() >= 3) %>% 
   summarize(average_height = mean(height, na.rm = TRUE),
             average_weight = mean(mass, na.rm = TRUE),
             individuals = n()) %>%
@@ -236,11 +246,11 @@ sw_force %>%
 
 # slice_head() to select n FIRST rows
 sw_force %>%
-  slice_head(n = 5)
+  slice_head(n = 5) #head()
 
 # slice_tail() to select n LAST rows
 sw_force %>%
-  slice_tail(n = 5)
+  slice_tail(n = 5) #tail()
 
 # slice_max() to select rows with highest values
   # top 5 characters with highest the_force values
@@ -282,6 +292,9 @@ nonclone_wars %>%
 # define columns to override this behaviour
 clone_wars %>%
   distinct(name, height, mass)
+
+clone_wars %>%
+  distinct(name, height, mass, .keep_all = TRUE)
 
 clone_wars %>%
   distinct(across(contains("color")))
