@@ -13,7 +13,8 @@ graphical primitives to use, and it takes care of the details. "
 # library(dplyr)
 # library(tidyr)
 # library(ggplot2)
-library(tidyverse)
+# library(tidyverse)
+library(dplyr)
 
 # - Your first plot ----
 # initialize ggplot object with starwars data
