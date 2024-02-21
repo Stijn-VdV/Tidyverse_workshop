@@ -31,7 +31,7 @@ billboard %>%
     cols = starts_with("wk"), # -c(artist, track, date.entered)
     names_to = "week",
     values_to = "rank"
-  )
+  ) 
 
 ?pivot_longer
 
@@ -124,5 +124,4 @@ my_data %>%
 #                Feel free to use head() and glimpse(), as well.
 #             2) Pivot the dataset to a wide format with each station as a column.
 #             3) Summarize all columns to a single row containing the column sums.
-
 

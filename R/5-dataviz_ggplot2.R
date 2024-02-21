@@ -13,8 +13,7 @@ graphical primitives to use, and it takes care of the details. "
 # library(dplyr)
 # library(tidyr)
 # library(ggplot2)
-# library(tidyverse)
-library(dplyr)
+library(tidyverse)
 
 # - Your first plot ----
 # initialize ggplot object with starwars data
@@ -55,7 +54,7 @@ tuesdata <- tidytuesdayR::tt_load('2021-06-29')
 animal_rescues_raw <- tuesdata$animal_rescues
 tuesdata
 
-# dataviz: number of animals rescues in the last couple of years
+# dataviz: number of animals rescued in the last couple of years
 # prepare animal_rescues for dataviz
 animal_rescues <- animal_rescues_raw %>%
     # select and rename only columns of interest
@@ -79,7 +78,6 @@ animal_rescues <- animal_rescues_raw %>%
   group_by(animal) %>%
   filter(n() >= 5) %>%
   ungroup()
-
 
 # - Building the plot ----
 # basic bar plot => each bar represent group counts
@@ -124,7 +122,6 @@ ggplot() +
   coord_flip() +
   facet_wrap(~year) +
   scale_fill_brewer(palette = "Set3")
-
 
 # themes
 ggplot() +
@@ -206,7 +203,8 @@ my_plot <- animal_rescues %>%
     palette = "Set3", direction = -1) +
   scale_x_continuous(
     limits = c(0, 390),
-    expand = c(0, 0)) +
+    expand = c(0, 0)
+    ) +
   theme_classic() +
   labs(
     x = "Number of incidents",
